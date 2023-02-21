@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import 'ui/home.dart';
+import 'app/app.router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       scrollBehavior: const ScrollBehavior().copyWith(
         physics: const BouncingScrollPhysics(),
       ),
-      home: Home(),
+      onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
       navigatorObservers: [
         StackedService.routeObserver,
