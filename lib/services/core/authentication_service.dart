@@ -42,6 +42,46 @@ class AuthenticationService {
     }
   }
 
+  Future<FirebaseAuthenticationResult> createAccountWithEmail(
+      String email, String password, String fullName) async {
+    log.d('email:$email');
+
+    try {
+      final result = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      log.d(
+        'Create user with email result: ${result.credential} ${result.user}',
+      );
+
+      FirebaseAuthenticationResult firebaseAuthenticationResult =
+          FirebaseAuthenticationResult(
+        user: result.user,
+      );
+
+      await firebaseAuth.currentUser?.updateDisplayName(
+        fullName,
+      );
+
+      return firebaseAuthenticationResult;
+    } on firebase.FirebaseAuthException catch (e) {
+      log.e('A firebase exception has occurred. $e');
+      return FirebaseAuthenticationResult.error(
+          exceptionCode: e.code.toLowerCase(),
+          errorMessage: FirebaseAuthExceptionHandler.getMessage(
+            e.code.toLowerCase(),
+          ));
+    } on Exception catch (e) {
+      log.e('A general exception has occurred. $e');
+      return FirebaseAuthenticationResult.error(
+          errorMessage: FirebaseAuthExceptionHandler.getMessage(
+        'account-not-created',
+      ));
+    }
+  }
+
   /// When a [User] decides to logout then should
   /// dispose the current state of this class
   Future<void> logout() async {

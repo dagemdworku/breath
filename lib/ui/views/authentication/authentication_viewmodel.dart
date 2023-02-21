@@ -212,8 +212,29 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     }
   }
 
-  void signUp() {
-    goForward();
+  Future<void> signUp() async {
+    _validateFullName();
+
+    if (_errorMessage != null) {
+      _setFormIndex(2, false);
+      return;
+    }
+
+    FirebaseAuthenticationResult result =
+        await _authenticationService.createAccountWithEmail(
+      _email,
+      _password,
+      _fullName,
+    );
+
+    if (result.hasError) {
+      log.e(result.errorMessage);
+
+      _errorMessage = result.errorMessage;
+      notifyListeners();
+    } else {
+      log.i('signed up successfully');
+    }
   }
 
   Future<void> signIn() async {
