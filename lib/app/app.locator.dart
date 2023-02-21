@@ -8,6 +8,8 @@
 
 import 'package:stacked_core/stacked_core.dart';
 
+import '../services/core/authentication_service.dart';
+
 final locator = StackedLocator.instance;
 
 Future<void> setupLocator(
@@ -17,4 +19,5 @@ Future<void> setupLocator(
       environment: environment, environmentFilter: environmentFilter);
 
 // Register dependencies
+  locator.registerLazySingleton(() => AuthenticationService());
 }

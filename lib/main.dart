@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import 'app/app.locator.dart';
 import 'app/app.router.dart';
 import 'app/env/env.dart';
 import 'firebase_options.dart';
@@ -13,6 +14,8 @@ Future<void> main() async {
     name: Env.projectId,
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await setupLocator();
 
   runApp(const MyApp());
 }
