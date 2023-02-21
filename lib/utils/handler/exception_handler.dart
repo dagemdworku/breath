@@ -32,8 +32,12 @@ class FirebaseAuthExceptionHandler {
       'Something went wrong. Please try again later.',
     ),
     FirebaseAuthErrorMessage(
+      'user-not-found',
+      'No account exists for the email you\'re trying to use. Sign up instead.',
+    ),
+    FirebaseAuthErrorMessage(
       'email-already-in-use',
-      'An account already exists for the email you\'re trying to use. Login instead.',
+      'An account already exists for the email you\'re trying to use. Sign in instead.',
     ),
     FirebaseAuthErrorMessage(
       'invalid-email',
@@ -55,7 +59,9 @@ class FirebaseAuthExceptionHandler {
 
   static String getMessage(String code) {
     for (var exception in exceptions) {
-      if (exception.code.contains(code)) return exception.message;
+      print(code);
+      print(exception.code);
+      if (exception.code == code) return exception.message;
     }
     return 'Something went wrong. Please try again later.';
   }
