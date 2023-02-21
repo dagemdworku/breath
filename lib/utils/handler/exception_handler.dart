@@ -44,6 +44,10 @@ class FirebaseAuthExceptionHandler {
       'The email you\'re using is invalid. Please use a valid email.',
     ),
     FirebaseAuthErrorMessage(
+      'account-not-created',
+      'We could not create your account at this time. Please try again',
+    ),
+    FirebaseAuthErrorMessage(
       'operation-not-allowed',
       'The authentication is not enabled on Firebase. Please enable the Authentication type on Firebase.',
     ),
