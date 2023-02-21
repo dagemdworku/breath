@@ -1,4 +1,6 @@
+import 'package:breath/app/app.locator.dart';
 import 'package:breath/app/app.logger.dart';
+import 'package:breath/services/services.dart';
 import 'package:breath/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -30,6 +32,9 @@ class AuthenticationViewModelForm {
 
 class AuthenticationViewModel extends IndexTrackingViewModel {
   final log = getLogger('AuthenticationViewModel');
+
+  final AuthenticationService _authenticationService =
+      locator<AuthenticationService>();
 
   final DateTime minimumAge =
       DateTime.now().subtract(const Duration(days: 365 * 15));
@@ -136,8 +141,6 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
   void _validate() {
     _runValidation = true;
 
-    _errorMessage = null;
-
     switch (_progress) {
       case AuthenticationViewProgress.email:
         _validateEmail();
@@ -159,6 +162,8 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
   }
 
   void _validateEmail() {
+    _errorMessage = null;
+
     if (_email.isEmpty) {
       _errorMessage = 'email is can not be empty';
     } else if (!StringHelper.isValidEmail(_email)) {
@@ -166,24 +171,30 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     }
   }
 
-  void _validatePassword() {
+  void _validatePassword({bool filledOnly = false}) {
+    _errorMessage = null;
+
     if (_password.isEmpty) {
       _errorMessage = 'password can not be empty';
-    } else if (_password.length < 6) {
-      _errorMessage = 'password too short';
-    } else if (!_password.contains(RegExp(r'[a-z]'))) {
-      _errorMessage = 'password must contain at least one small letter';
-    } else if (!_password.contains(RegExp(r'[A-Z]'))) {
-      _errorMessage = 'password must contain at least one capital letter';
-    } else if (!_password.contains(RegExp(r'[0-9]'))) {
-      _errorMessage = 'password must contain at least one number';
-    } else if (!_password.contains(RegExp(r'[#?!@$%^&*-]'))) {
-      _errorMessage =
-          'password must contain at least one of the following special characters, #?!@\$%^&*-';
+    } else if (!filledOnly) {
+      if (_password.length < 6) {
+        _errorMessage = 'password too short';
+      } else if (!_password.contains(RegExp(r'[a-z]'))) {
+        _errorMessage = 'password must contain at least one small letter';
+      } else if (!_password.contains(RegExp(r'[A-Z]'))) {
+        _errorMessage = 'password must contain at least one capital letter';
+      } else if (!_password.contains(RegExp(r'[0-9]'))) {
+        _errorMessage = 'password must contain at least one number';
+      } else if (!_password.contains(RegExp(r'[#?!@$%^&*-]'))) {
+        _errorMessage =
+            'password must contain at least one of the following special characters, #?!@\$%^&*-';
+      }
     }
   }
 
   void _validateFullName() {
+    _errorMessage = null;
+
     if (_fullName.isEmpty) {
       _errorMessage = 'full name can not be empty';
     } else if (_fullName.length < 4) {
@@ -194,6 +205,8 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
   }
 
   void _validateAge() {
+    _errorMessage = null;
+
     if (_dateTime!.isAfter(minimumAge)) {
       _errorMessage = 'sorry, you are too young to use our platform';
     }
@@ -203,5 +216,24 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     goForward();
   }
 
-  void signIn() {}
+  Future<void> signIn() async {
+    _validatePassword(filledOnly: true);
+
+    if (_errorMessage != null) return;
+
+    final FirebaseAuthenticationResult result =
+        await _authenticationService.loginWithEmail(
+      _email,
+      _password,
+    );
+
+    if (result.hasError) {
+      log.e(result.errorMessage);
+
+      _errorMessage = result.errorMessage;
+      notifyListeners();
+    } else {
+      log.i('signed in successfully');
+    }
+  }
 }
