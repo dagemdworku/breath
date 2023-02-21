@@ -10,8 +10,10 @@ class WrapperView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<WrapperViewModel>.reactive(
       builder: (context, model, child) => const Scaffold(
-        body: Text(
-          'this is wrapper.',
+        body: Center(
+          child: Text(
+            'this is wrapper.',
+          ),
         ),
       ),
       viewModelBuilder: () => WrapperViewModel(),
