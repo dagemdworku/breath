@@ -13,11 +13,14 @@ import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i4;
 
 class Routes {
-  static const authenticationView = '/';
+  static const startupView = '/';
+
+  static const authenticationView = '/authentication-view';
 
   static const wrapperView = '/wrapper-view';
 
   static const all = <String>{
+    startupView,
     authenticationView,
     wrapperView,
   };
@@ -25,6 +28,10 @@ class Routes {
 
 class StackedRouter extends _i1.RouterBase {
   final _routes = <_i1.RouteDef>[
+    _i1.RouteDef(
+      Routes.startupView,
+      page: _i2.StartupView,
+    ),
     _i1.RouteDef(
       Routes.authenticationView,
       page: _i2.AuthenticationView,
@@ -36,6 +43,14 @@ class StackedRouter extends _i1.RouterBase {
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
+    _i2.StartupView: (data) {
+      return PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const _i2.StartupView(),
+        settings: data,
+        transitionsBuilder: data.transition ?? _i3.TransitionsBuilders.fadeIn,
+      );
+    },
     _i2.AuthenticationView: (data) {
       return PageRouteBuilder<dynamic>(
         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -61,6 +76,20 @@ class StackedRouter extends _i1.RouterBase {
 }
 
 extension NavigatorStateExtension on _i4.NavigationService {
+  Future<dynamic> navigateToStartupView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.startupView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> navigateToAuthenticationView([
     int? routerId,
     bool preventDuplicates = true,
@@ -83,6 +112,20 @@ extension NavigatorStateExtension on _i4.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.wrapperView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithStartupView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.startupView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

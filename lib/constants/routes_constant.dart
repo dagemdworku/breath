@@ -5,8 +5,12 @@ import 'package:stacked/stacked_annotations.dart';
 class RoutesConstant {
   static const List<StackedRoute<dynamic>> routes = [
     CustomRoute(
-      page: AuthenticationView,
+      page: StartupView,
       initial: true,
+      transitionsBuilder: TransitionsBuilders.fadeIn,
+    ),
+    CustomRoute(
+      page: AuthenticationView,
       transitionsBuilder: TransitionsBuilders.fadeIn,
     ),
     CustomRoute(
