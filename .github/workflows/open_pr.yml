@@ -1,0 +1,30 @@
+name: Pull Request (Opened)
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  assign_author:
+    name: Assign Author to the Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign Author to the Pull Request
+        uses: technote-space/assign-author@v1
+
+  labeler:
+    name: Label the Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label the Pull Request by branch name
+        uses: TimonVS/pr-labeler-action@v4
+        with:
+          configuration-path: .github/pr-labeling/branch-name.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label the Pull Request by file changes
+        uses: actions/labeler@v4
+        with:
+          configuration-path: .github/pr-labeling/file-changes.yml
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

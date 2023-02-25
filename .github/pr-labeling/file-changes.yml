@@ -1,0 +1,35 @@
+automation:
+  - any: [".github/**/*"]
+
+vscode:
+  - any: [".vscode/**/*"]
+
+lib:
+  - any: ["lib/**/*"]
+
+main:
+  - any: ["lib/main.dart"]
+
+app:
+  - any: ["lib/app/*"]
+
+constants:
+  - any: ["lib/constants/*"]
+
+services:
+  - any: ["lib/services/**/*"]
+
+views:
+  - any: ["lib/ui/views/**/*"]
+
+widgets:
+  - any: ["lib/ui/widgets/**/*"]
+
+utils:
+  - any: ["lib/utils/**/*"]
+
+ios:
+  - any: ["ios/**/*"]
+
+android:
+  - any: ["android/**/*"]
