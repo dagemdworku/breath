@@ -21,6 +21,7 @@ class WrapperView extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigationBar(
           onTap: model.setViewIndex,
+          currentIndex: model.currentIndex,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.home),
