@@ -1,3 +1,4 @@
+import 'package:breath/ui/views/views.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -10,11 +11,7 @@ class WrapperView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<WrapperViewModel>.reactive(
       builder: (context, model, child) => const Scaffold(
-        body: Center(
-          child: Text(
-            'this is wrapper.',
-          ),
-        ),
+        body: HomeView(),
       ),
       viewModelBuilder: () => WrapperViewModel(),
     );
