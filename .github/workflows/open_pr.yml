@@ -2,7 +2,9 @@ name: Pull Request (Opened)
 
 on:
   pull_request:
-    types: [opened]
+
+permissions:
+  contents: read
 
 jobs:
   assign_author:
@@ -15,13 +17,15 @@ jobs:
   labeler:
     name: Label the Pull Request
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Label the Pull Request by branch name
         uses: TimonVS/pr-labeler-action@v4
         with:
           configuration-path: .github/pr-labeling/branch-name.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Label the Pull Request by file changes
         uses: actions/labeler@v4
