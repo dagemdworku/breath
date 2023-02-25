@@ -1,5 +1,4 @@
-import 'package:breath/app/app.logger.dart';
-import 'package:stacked/stacked.dart';
+import 'package:breath/breath.dart';
 
 enum CurrentPage { home, settings }
 

@@ -1,9 +1,5 @@
-import 'package:breath/app/app.locator.dart';
-import 'package:breath/app/app.logger.dart';
-import 'package:breath/services/services.dart';
-import 'package:breath/utils/utils.dart';
+import 'package:breath/breath.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 enum AuthenticationViewProgress {
   email,

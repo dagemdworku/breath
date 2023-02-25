@@ -5,7 +5,7 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:breath/ui/views/views.dart' as _i2;
+import 'package:breath/breath.dart' as _i2;
 import 'package:flutter/material.dart';
 import 'package:stacked/src/code_generation/router_annotation/transitions_builders.dart'
     as _i3;

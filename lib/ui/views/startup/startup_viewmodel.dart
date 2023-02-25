@@ -1,8 +1,4 @@
-import 'package:breath/app/app.locator.dart';
-import 'package:breath/app/app.logger.dart';
-import 'package:breath/app/app.router.dart';
-import 'package:breath/services/services.dart';
-import 'package:stacked/stacked.dart';
+import 'package:breath/breath.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class StartupViewModel extends BaseViewModel {

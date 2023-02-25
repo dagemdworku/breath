@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:breath/app/app.logger.dart';
-import 'package:breath/utils/handler/exception_handler.dart';
+import 'package:breath/breath.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
 class AuthenticationService {
