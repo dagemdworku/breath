@@ -1,9 +1,7 @@
 import 'package:animations/animations.dart';
-import 'package:breath/ui/views/views.dart';
-import 'package:breath/ui/widgets/widgets.dart';
+import 'package:breath/breath.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 import 'wrapper_viewmodel.dart';
 

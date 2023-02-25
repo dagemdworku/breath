@@ -1,7 +1,6 @@
-import 'package:breath/ui/widgets/widgets.dart';
+import 'package:breath/breath.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
 
 import 'authentication_viewmodel.dart';
 
