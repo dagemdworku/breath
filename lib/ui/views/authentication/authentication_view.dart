@@ -56,7 +56,7 @@ class AuthenticationView extends StatelessWidget {
                   const SizedBox(width: 12.0),
                 ],
                 if (model.progress == AuthenticationViewProgress.password ||
-                    model.progress == AuthenticationViewProgress.age)
+                    model.progress == AuthenticationViewProgress.fullName)
                   Expanded(
                     child: BFilledButton(
                       key: const Key('sign up'),
@@ -114,17 +114,6 @@ class AuthenticationView extends StatelessWidget {
             autofocus: viewModel.form.fullNameController.text.isEmpty,
             onChanged: (fullName) => viewModel.onChanged(fullName: fullName),
             onEditingComplete: viewModel.goForward,
-          ),
-        );
-
-      case AuthenticationViewProgress.age:
-        return _FormField(
-          child: BDateTimePicker(
-            maxHeight: 300.0,
-            maximumYear: viewModel.minimumAge.year,
-            minimumYear: 1950,
-            initialDateTime: viewModel.dateTime,
-            onDateTimeChanged: viewModel.onDateTimeChanged,
           ),
         );
     }

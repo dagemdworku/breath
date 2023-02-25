@@ -9,7 +9,6 @@ enum AuthenticationViewProgress {
   email,
   password,
   fullName,
-  age,
 }
 
 class AuthenticationViewModelForm {
@@ -87,14 +86,8 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     notifyListeners();
   }
 
-  void onDateTimeChanged(DateTime dateTime) {
-    log.i(dateTime);
-    _dateTime = dateTime;
-    notifyListeners();
-  }
-
   void goForward() {
-    if (currentIndex < 3) {
+    if (currentIndex < 2) {
       _setFormIndex(currentIndex + 1, true);
     }
   }
@@ -126,9 +119,6 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
         _progress = AuthenticationViewProgress.fullName;
         form.fullNameFocusNode.requestFocus();
         break;
-      case 3:
-        _progress = AuthenticationViewProgress.age;
-        break;
       default:
         _progress = AuthenticationViewProgress.email;
         form.emailFocusNode.requestFocus();
@@ -150,9 +140,6 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
         break;
       case AuthenticationViewProgress.fullName:
         _validateFullName();
-        break;
-      case AuthenticationViewProgress.age:
-        _validateAge();
         break;
     }
 
@@ -201,14 +188,6 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
       _errorMessage = 'full name too short';
     } else if (!_fullName.contains(' ')) {
       _errorMessage = 'please enter your full name';
-    }
-  }
-
-  void _validateAge() {
-    _errorMessage = null;
-
-    if (_dateTime!.isAfter(minimumAge)) {
-      _errorMessage = 'sorry, you are too young to use our platform';
     }
   }
 
