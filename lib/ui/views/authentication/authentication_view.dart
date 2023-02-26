@@ -13,58 +13,72 @@ class AuthenticationView extends StatelessWidget {
       onViewModelReady: (viewModel) => viewModel.onViewModelReady(),
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
-          child: BPageTransition(
-            fillScreen: true,
-            reverse: model.reverse,
-            child: _formField(model),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Material(
+                  color: Colors.blueGrey.shade100,
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: const SizedBox(width: 50.0, height: 50.0),
+                ),
+              ),
+              Expanded(
+                child: BPageTransition(
+                  fillScreen: true,
+                  reverse: model.reverse,
+                  child: _formField(model),
+                ),
+              ),
+            ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: model.currentIndex > 0
-            ? BFilledButton(
-                icon: CupertinoIcons.back,
-                margin: const EdgeInsets.symmetric(vertical: 12.0),
-                onTap: model.goBackward,
-              )
-            : null,
-        bottomSheet: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              children: [
-                if (model.progress == AuthenticationViewProgress.email ||
-                    model.progress == AuthenticationViewProgress.fullName)
-                  Expanded(
-                    child: BFilledButton(
-                      key: const Key('continue'),
-                      text: 'continue',
-                      fillWidth: true,
-                      onTap: model.goForward,
+        bottomSheet: Material(
+          color: Colors.white,
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: [
+                  if (model.progress == AuthenticationViewProgress.email)
+                    Expanded(
+                      child: BFilledButton(
+                        key: const Key('continue'),
+                        text: 'continue',
+                        fillWidth: true,
+                        onTap: model.goForward,
+                      ),
                     ),
-                  ),
-                if (model.progress == AuthenticationViewProgress.password) ...[
-                  Expanded(
-                    child: BFilledButton(
-                      key: const Key('sign_in'),
-                      text: 'sign in',
-                      fillWidth: true,
-                      onTap: model.signIn,
+                  if (model.progress ==
+                      AuthenticationViewProgress.password) ...[
+                    Expanded(
+                      child: BFilledButton(
+                        key: const Key('sign_in'),
+                        text: 'sign in',
+                        fillWidth: true,
+                        isOutlined: true,
+                        onTap: model.signIn,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12.0),
+                    const SizedBox(width: 12.0),
+                  ],
+                  if (model.progress == AuthenticationViewProgress.password ||
+                      model.progress == AuthenticationViewProgress.fullName)
+                    Expanded(
+                      child: BFilledButton(
+                        key: const Key('sign up'),
+                        text: 'sign up',
+                        fillWidth: true,
+                        onTap: model.progress ==
+                                AuthenticationViewProgress.password
+                            ? model.goForward
+                            : model.signUp,
+                      ),
+                    ),
                 ],
-                if (model.progress == AuthenticationViewProgress.password ||
-                    model.progress == AuthenticationViewProgress.fullName)
-                  Expanded(
-                    child: BFilledButton(
-                      key: const Key('sign up'),
-                      text: 'sign up',
-                      fillWidth: true,
-                      onTap: model.signUp,
-                    ),
-                  ),
-              ],
+              ),
             ),
           ),
         ),
@@ -92,12 +106,46 @@ class AuthenticationView extends StatelessWidget {
       case AuthenticationViewProgress.password:
         return _FormField(
           key: const Key('password'),
+          topWidget: Row(
+            children: [
+              BFilledButton(
+                icon: CupertinoIcons.back,
+                backgroundColor: Colors.blueGrey.shade50,
+                contentColor: Colors.blueGrey.shade500,
+                onTap: viewModel.goBackward,
+              ),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      viewModel.form.emailController.text.trim(),
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        height: 24 / 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      'change email address',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.blueGrey.shade800,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
           child: BTextField(
             hintText: 'please enter your password',
             helperText: 'password',
             errorText: viewModel.errorMessage,
             controller: viewModel.form.passwordController,
             focusNode: viewModel.form.passwordFocusNode,
+            obscureText: true,
             onChanged: (password) => viewModel.onChanged(password: password),
           ),
         );
@@ -110,7 +158,6 @@ class AuthenticationView extends StatelessWidget {
             errorText: viewModel.errorMessage,
             controller: viewModel.form.fullNameController,
             focusNode: viewModel.form.fullNameFocusNode,
-            autofocus: viewModel.form.fullNameController.text.isEmpty,
             onChanged: (fullName) => viewModel.onChanged(fullName: fullName),
             onEditingComplete: viewModel.goForward,
           ),
@@ -121,18 +168,36 @@ class AuthenticationView extends StatelessWidget {
 
 class _FormField extends StatelessWidget {
   final Widget child;
+  final Widget? topWidget;
 
   const _FormField({
     super.key,
     required this.child,
+    this.topWidget,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Center(
-        child: child,
+    return Material(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (topWidget != null) ...[
+                topWidget!,
+                const SizedBox(height: 8.0),
+              ],
+              child,
+              if (topWidget != null) ...[
+                const SizedBox(height: 50.0),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

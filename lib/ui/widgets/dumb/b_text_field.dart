@@ -29,6 +29,28 @@ class BTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const TextStyle textStyle = TextStyle(
+      fontSize: 20,
+      height: 30 / 20,
+      fontWeight: FontWeight.w500,
+      color: Colors.black,
+    );
+
+    final TextStyle helperTextStyle = TextStyle(
+      fontSize: 12,
+      height: 14 / 12,
+      fontWeight: FontWeight.w400,
+      color: Colors.blueGrey.shade800,
+    );
+
+    final TextStyle errorTextStyle = helperTextStyle.copyWith(
+      color: Colors.red,
+    );
+
+    final TextStyle hintTextStyle = textStyle.copyWith(
+      color: Colors.blueGrey.shade300,
+    );
+
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
@@ -39,11 +61,25 @@ class BTextField extends StatelessWidget {
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.center,
       obscureText: obscureText,
+      style: textStyle,
+      cursorColor: Colors.blueGrey.shade400,
       decoration: InputDecoration(
         hintText: hintText,
         helperText: helperText,
         errorText: errorText,
         errorMaxLines: 3,
+        hintStyle: hintTextStyle,
+        helperStyle: helperTextStyle,
+        errorStyle: errorTextStyle,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueGrey.shade100),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            width: 1.5,
+            color: Colors.blueGrey.shade400,
+          ),
+        ),
       ),
       onChanged: onChanged,
       onEditingComplete: onEditingComplete,
