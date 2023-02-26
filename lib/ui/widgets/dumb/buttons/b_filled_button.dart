@@ -7,6 +7,7 @@ class BFilledButton extends StatelessWidget {
   final String? text;
   final IconData? icon;
 
+  final bool isBusy;
   final bool fillWidth;
   final bool isOutlined;
   final EdgeInsetsGeometry? margin;
@@ -20,6 +21,7 @@ class BFilledButton extends StatelessWidget {
     super.key,
     this.text,
     this.icon,
+    this.isBusy = false,
     this.fillWidth = false,
     this.isOutlined = false,
     this.margin,
@@ -39,6 +41,7 @@ class BFilledButton extends StatelessWidget {
         margin: margin,
         width: fillWidth ? double.infinity : null,
         padding: _padding(),
+        constraints: const BoxConstraints(minHeight: 44.0),
         decoration: BoxDecoration(
           color: isOutlined
               ? Colors.white
@@ -51,17 +54,29 @@ class BFilledButton extends StatelessWidget {
                 : backgroundColor ?? Colors.blueGrey.shade500,
           ),
         ),
-        child: text != null
-            ? _TextContent(
-                text: text!,
-                isOutlined: isOutlined,
-                color: contentColor,
+        child: isBusy
+            ? Center(
+                child: SizedBox(
+                  width: 16.0,
+                  height: 16.0,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    color: contentColor ??
+                        (isOutlined ? Colors.blueGrey.shade500 : Colors.white),
+                  ),
+                ),
               )
-            : _IconContent(
-                icon: icon!,
-                isOutlined: isOutlined,
-                color: contentColor,
-              ),
+            : text != null
+                ? _TextContent(
+                    text: text!,
+                    isOutlined: isOutlined,
+                    color: contentColor,
+                  )
+                : _IconContent(
+                    icon: icon!,
+                    isOutlined: isOutlined,
+                    color: contentColor,
+                  ),
       ),
     );
   }
