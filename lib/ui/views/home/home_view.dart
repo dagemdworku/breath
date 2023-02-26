@@ -6,96 +6,38 @@ import 'package:flutter/material.dart';
 
 import 'home_viewmodel.dart';
 
-const double _minProfileImageSize = 100.0;
-const double _verticalTolerance = 32.0;
-const double _collapsedAppBarHeight = _minProfileImageSize + _verticalTolerance;
-
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    final double topPadding = MediaQuery.of(context).padding.top;
 
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          final double layoutWidth = constraints.maxWidth;
-          final double layoutHeight = constraints.maxHeight;
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final double layoutWidth = constraints.maxWidth;
+            final double layoutHeight = constraints.maxHeight;
 
-          final double appBarMaxSize = max(layoutWidth, layoutHeight / 2);
+            final double appBarMaxSize = max(layoutWidth, layoutHeight / 2);
 
-          return Material(
-            color: themeData.scaffoldBackgroundColor,
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  elevation: 0,
-                  pinned: true,
-                  stretch: true,
-                  automaticallyImplyLeading: true,
-                  expandedHeight: appBarMaxSize,
-                  collapsedHeight: _collapsedAppBarHeight,
-                  toolbarHeight: _collapsedAppBarHeight,
-                  backgroundColor: Colors.blueGrey.shade100,
-                  flexibleSpace: LayoutBuilder(
-                    builder: (
-                      context,
-                      constraints,
-                    ) {
-                      final bool showLarge = constraints.maxHeight >=
-                          appBarMaxSize - _verticalTolerance;
-
-                      final bool showMedium = constraints.maxHeight >
-                          _minProfileImageSize + _verticalTolerance * 3;
-
-                      final bool reduceAnimation =
-                          showLarge && constraints.maxHeight > appBarMaxSize;
-
-                      double width = _minProfileImageSize,
-                          height = _minProfileImageSize;
-                      BorderRadiusGeometry borderRadius =
-                          BorderRadius.circular(100.0);
-
-                      if (showLarge) {
-                        width = constraints.maxWidth;
-                        height = constraints.maxHeight;
-                        borderRadius = BorderRadius.circular(0.0);
-                      } else if (showMedium) {
-                        width = constraints.maxHeight - _verticalTolerance * 2;
-                        height = constraints.maxHeight - _verticalTolerance * 2;
-                        borderRadius = BorderRadius.circular(16.0);
-                      }
-
-                      return Center(
-                        child: AnimatedContainer(
-                          width: width,
-                          height: height,
-                          clipBehavior: Clip.hardEdge,
-                          margin: EdgeInsets.only(
-                            top: showLarge ? 0.0 : topPadding,
-                          ),
-                          duration: Duration(
-                            milliseconds: reduceAnimation ? 0 : 100,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.blueGrey.shade600,
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                      );
-                    },
+            return Material(
+              color: themeData.scaffoldBackgroundColor,
+              child: CustomScrollView(
+                slivers: [
+                  BUserAppBar(
+                    appBarMaxSize: appBarMaxSize,
                   ),
-                ),
-                const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: _UserInformation(),
-                ),
-              ],
-            ),
-          );
-        }),
+                  const SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _UserInformation(),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
       viewModelBuilder: () => HomeViewModel(),
     );

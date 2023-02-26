@@ -1,7 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BMatchListTile extends StatelessWidget {
-  const BMatchListTile({super.key});
+  final String name;
+  final String progress;
+
+  final void Function()? onTap;
+
+  const BMatchListTile({
+    super.key,
+    required this.name,
+    required this.progress,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,35 +29,39 @@ class BMatchListTile extends StatelessWidget {
       color: Colors.blueGrey.shade600,
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Row(
-        children: [
-          Material(
-            color: Colors.blueGrey.shade100,
-            borderRadius: BorderRadius.circular(100),
-            child: const SizedBox(
-              width: 50.0,
-              height: 50.0,
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: onTap,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8.0),
+        child: Row(
+          children: [
+            Material(
+              color: Colors.blueGrey.shade100,
+              borderRadius: BorderRadius.circular(100),
+              child: const SizedBox(
+                width: 50.0,
+                height: 50.0,
+              ),
             ),
-          ),
-          const SizedBox(width: 12.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'name name',
-                  style: nameTextStyle,
-                ),
-                Text(
-                  'go out on a date',
-                  style: progressTextStyle,
-                ),
-              ],
+            const SizedBox(width: 12.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: nameTextStyle,
+                  ),
+                  Text(
+                    progress,
+                    style: progressTextStyle,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
