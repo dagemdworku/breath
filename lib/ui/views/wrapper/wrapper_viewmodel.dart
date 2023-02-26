@@ -1,6 +1,6 @@
 import 'package:breath/breath.dart';
 
-enum CurrentPage { home, settings }
+enum CurrentPage { home, matches, settings }
 
 class WrapperViewModel extends IndexTrackingViewModel {
   final log = getLogger('WrapperViewModel');
@@ -13,6 +13,9 @@ class WrapperViewModel extends IndexTrackingViewModel {
 
     switch (index) {
       case 1:
+        _currentPage = CurrentPage.matches;
+        break;
+      case 2:
         _currentPage = CurrentPage.settings;
         break;
       default:

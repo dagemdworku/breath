@@ -26,6 +26,10 @@ class WrapperView extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.arrow_down_right_arrow_up_left),
+              label: 'Matches',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.settings),
               label: 'Settings',
             ),
@@ -40,6 +44,8 @@ class WrapperView extends StatelessWidget {
     switch (model.currentPage) {
       case CurrentPage.home:
         return const HomeView();
+      case CurrentPage.matches:
+        return const MatchesView();
       case CurrentPage.settings:
         return const SettingsView();
     }

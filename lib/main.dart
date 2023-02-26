@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blueGrey,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
+          elevation: 0.0,
+          centerTitle: true,
           color: Colors.blueGrey.shade100,
           foregroundColor: Colors.blueGrey.shade700,
         ),
