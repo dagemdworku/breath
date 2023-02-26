@@ -21,10 +21,10 @@ class StartupViewModel extends BaseViewModel {
   }
 
   void gotoWrapper() {
-    _navigationService.navigateToWrapperView();
+    _navigationService.clearStackAndShow(Routes.wrapperView);
   }
 
   void gotoAuth() {
-    _navigationService.navigateToAuthenticationView();
+    _navigationService.clearStackAndShow(Routes.authenticationView);
   }
 }
