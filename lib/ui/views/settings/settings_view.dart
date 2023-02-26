@@ -9,10 +9,12 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
-      builder: (context, model, child) => const Scaffold(
+      builder: (context, model, child) => Scaffold(
+        appBar: AppBar(title: const Text('Settings')),
         body: Center(
-          child: Text(
-            'this is settings',
+          child: BFilledButton(
+            text: 'Sign Out',
+            onTap: model.signOut,
           ),
         ),
       ),
