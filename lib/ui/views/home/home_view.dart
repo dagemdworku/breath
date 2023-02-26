@@ -115,14 +115,6 @@ class _UserInformation extends StatelessWidget {
       color: Colors.blueGrey.shade900,
     );
 
-    final TextStyle bioStyle = TextStyle(
-      fontFamily: 'Roboto',
-      fontSize: 20,
-      height: 30 / 20,
-      fontWeight: FontWeight.w500,
-      color: Colors.blueGrey.shade900,
-    );
-
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
@@ -134,9 +126,9 @@ class _UserInformation extends StatelessWidget {
           const _Information(text: 'City', icon: CupertinoIcons.house_alt_fill),
           const _Information(text: 'Job Title', icon: Icons.business_center),
           const SizedBox(height: 8.0),
-          Text(
-            'Sunt ad pariatur proident excepteur amet nulla laborum. Et mollit consectetur ullamco esse fugiat ea est elit adipisicing commodo ullamco mollit laborum quis. Eu dolor incididunt nisi pariatur amet officia culpa cillum ipsum nisi.',
-            style: bioStyle,
+          const BBioQuote(
+            text:
+                'Sunt ad pariatur proident excepteur amet nulla laborum. Et mollit consectetur ullamco esse fugiat ea est elit adipisicing commodo ullamco mollit laborum quis. Eu dolor incididunt nisi pariatur amet officia culpa cillum ipsum nisi.',
           ),
         ],
       ),
