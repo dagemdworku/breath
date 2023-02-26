@@ -32,6 +32,10 @@ class FirebaseAuthExceptionHandler {
       'Something went wrong. Please try again later.',
     ),
     FirebaseAuthErrorMessage(
+      'network-request-failed',
+      'Your network is not stable, please make sure if you are connected to an internet.',
+    ),
+    FirebaseAuthErrorMessage(
       'user-not-found',
       'No account exists for the email you\'re trying to use. Sign up instead.',
     ),
@@ -63,10 +67,8 @@ class FirebaseAuthExceptionHandler {
 
   static String getMessage(String code) {
     for (var exception in exceptions) {
-      print(code);
-      print(exception.code);
-      if (exception.code == code) return exception.message;
+      if (exception.code == code) return exception.message.toLowerCase();
     }
-    return 'Something went wrong. Please try again later.';
+    return 'Something went wrong. Please try again later.'.toLowerCase();
   }
 }

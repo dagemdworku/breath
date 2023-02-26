@@ -57,6 +57,7 @@ class AuthenticationView extends StatelessWidget {
                       child: BFilledButton(
                         key: const Key('sign_in'),
                         text: 'sign in',
+                        isBusy: model.isSignInBusy,
                         fillWidth: true,
                         isOutlined: true,
                         onTap: model.signIn,
@@ -70,6 +71,7 @@ class AuthenticationView extends StatelessWidget {
                       child: BFilledButton(
                         key: const Key('sign up'),
                         text: 'sign up',
+                        isBusy: model.isSignUpBusy,
                         fillWidth: true,
                         onTap: model.progress ==
                                 AuthenticationViewProgress.password

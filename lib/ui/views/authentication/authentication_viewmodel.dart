@@ -31,9 +31,6 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 
-  final DateTime minimumAge =
-      DateTime.now().subtract(const Duration(days: 365 * 15));
-
   late AuthenticationViewModelForm form;
 
   AuthenticationViewProgress _progress = AuthenticationViewProgress.email;
@@ -41,10 +38,13 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
 
   String _email = '', _password = '', _fullName = '';
 
-  DateTime? _dateTime;
-  DateTime? get dateTime => _dateTime;
-
   bool _runValidation = false;
+
+  bool _isSignUpBusy = false;
+  bool get isSignUpBusy => _isSignUpBusy;
+
+  bool _isSignInBusy = false;
+  bool get isSignInBusy => _isSignInBusy;
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -58,8 +58,6 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
       passwordFocusNode: FocusNode(),
       fullNameFocusNode: FocusNode(),
     );
-
-    _dateTime = minimumAge;
   }
 
   void onChanged({
@@ -68,11 +66,11 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     String? fullName,
   }) {
     if (email != null) {
-      _email = email.trim();
+      _email = email.toLowerCase().trim();
     } else if (password != null) {
       _password = password.trim();
     } else if (fullName != null) {
-      _fullName = fullName.trim();
+      _fullName = fullName.toLowerCase().trim();
     }
 
     if (_runValidation) {
@@ -91,6 +89,68 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
   void goBackward() {
     if (currentIndex > -1) {
       _setFormIndex(currentIndex - 1, false);
+    }
+  }
+
+  Future<void> signUp() async {
+    log.i('');
+    _validateFullName();
+
+    if (_errorMessage != null) return;
+
+    _setIsSignUpBusy(true);
+    try {
+      FirebaseAuthenticationResult result =
+          await _authenticationService.createAccountWithEmail(
+        _email,
+        _password,
+        _fullName,
+      );
+
+      if (result.hasError) {
+        log.e(result.errorMessage);
+
+        _errorMessage = result.errorMessage;
+        notifyListeners();
+      } else {
+        log.i('signed up successfully');
+      }
+
+      _setIsSignUpBusy(false);
+    } catch (e) {
+      _setIsSignUpBusy(false);
+      log.e(e);
+    }
+  }
+
+  Future<void> signIn() async {
+    log.i('');
+    _validatePassword(filledOnly: true);
+
+    if (_errorMessage != null) return;
+
+    _setIsSignInBusy(true);
+
+    try {
+      final FirebaseAuthenticationResult result =
+          await _authenticationService.loginWithEmail(
+        _email,
+        _password,
+      );
+
+      if (result.hasError) {
+        log.e(result.errorMessage);
+
+        _errorMessage = result.errorMessage;
+        notifyListeners();
+      } else {
+        log.i('signed in successfully');
+      }
+
+      _setIsSignInBusy(false);
+    } catch (e) {
+      _setIsSignInBusy(false);
+      log.e(e);
     }
   }
 
@@ -152,6 +212,8 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     } else if (!StringHelper.isValidEmail(_email)) {
       _errorMessage = 'email is not valid';
     }
+
+    notifyListeners();
   }
 
   void _validatePassword({bool filledOnly = false}) {
@@ -173,6 +235,8 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
             'password must contain at least one of the following special characters, #?!@\$%^&*-';
       }
     }
+
+    notifyListeners();
   }
 
   void _validateFullName() {
@@ -185,51 +249,17 @@ class AuthenticationViewModel extends IndexTrackingViewModel {
     } else if (!_fullName.contains(' ')) {
       _errorMessage = 'please enter your full name';
     }
+
+    notifyListeners();
   }
 
-  Future<void> signUp() async {
-    _validateFullName();
-
-    if (_errorMessage != null) {
-      _setFormIndex(2, false);
-      return;
-    }
-
-    FirebaseAuthenticationResult result =
-        await _authenticationService.createAccountWithEmail(
-      _email,
-      _password,
-      _fullName,
-    );
-
-    if (result.hasError) {
-      log.e(result.errorMessage);
-
-      _errorMessage = result.errorMessage;
-      notifyListeners();
-    } else {
-      log.i('signed up successfully');
-    }
+  void _setIsSignUpBusy(bool value) {
+    _isSignUpBusy = value;
+    notifyListeners();
   }
 
-  Future<void> signIn() async {
-    _validatePassword(filledOnly: true);
-
-    if (_errorMessage != null) return;
-
-    final FirebaseAuthenticationResult result =
-        await _authenticationService.loginWithEmail(
-      _email,
-      _password,
-    );
-
-    if (result.hasError) {
-      log.e(result.errorMessage);
-
-      _errorMessage = result.errorMessage;
-      notifyListeners();
-    } else {
-      log.i('signed in successfully');
-    }
+  void _setIsSignInBusy(bool value) {
+    _isSignInBusy = value;
+    notifyListeners();
   }
 }
