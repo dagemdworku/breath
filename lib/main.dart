@@ -26,6 +26,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Breath',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.blueGrey,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          color: Colors.blueGrey.shade100,
+          foregroundColor: Colors.blueGrey.shade700,
+        ),
+      ),
       scrollBehavior: const ScrollBehavior().copyWith(
         physics: const BouncingScrollPhysics(),
       ),
