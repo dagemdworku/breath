@@ -41,7 +41,7 @@ class BFilledButton extends StatelessWidget {
         margin: margin,
         width: fillWidth ? double.infinity : null,
         padding: _padding(),
-        constraints: const BoxConstraints(minHeight: 44.0),
+        constraints: const BoxConstraints(minHeight: 44.0, minWidth: 44.0),
         decoration: BoxDecoration(
           color: isOutlined
               ? Colors.white
@@ -51,7 +51,7 @@ class BFilledButton extends StatelessWidget {
             width: 1.0,
             color: isOutlined
                 ? borderColor ?? Colors.blueGrey.shade300
-                : backgroundColor ?? Colors.blueGrey.shade500,
+                : Colors.transparent,
           ),
         ),
         child: isBusy

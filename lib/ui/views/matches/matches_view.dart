@@ -13,7 +13,11 @@ class MatchesView extends StatelessWidget {
         appBar: AppBar(title: const Text('Matches')),
         body: ListView.separated(
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 16.0),
-          itemBuilder: (context, index) => BMatchListTile(),
+          itemBuilder: (context, index) => BMatchListTile(
+            name: 'name name',
+            progress: 'go out on a date',
+            onTap: () => model.gotoMatch(''),
+          ),
           separatorBuilder: (context, index) => Divider(
             color: Colors.blueGrey.shade100,
             thickness: 1.0,

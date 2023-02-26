@@ -15,5 +15,6 @@ class RoutesConstant {
       page: WrapperView,
       transitionsBuilder: TransitionsBuilders.fadeIn,
     ),
+    CupertinoRoute(page: MatchView),
   ];
 }

@@ -6,11 +6,13 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:breath/breath.dart' as _i2;
+import 'package:flutter/cupertino.dart' as _i4;
+import 'package:flutter/foundation.dart' as _i5;
 import 'package:flutter/material.dart';
 import 'package:stacked/src/code_generation/router_annotation/transitions_builders.dart'
     as _i3;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i4;
+import 'package:stacked_services/stacked_services.dart' as _i6;
 
 class Routes {
   static const startupView = '/';
@@ -19,10 +21,13 @@ class Routes {
 
   static const wrapperView = '/wrapper-view';
 
+  static const matchView = '/match-view';
+
   static const all = <String>{
     startupView,
     authenticationView,
     wrapperView,
+    matchView,
   };
 }
 
@@ -39,6 +44,10 @@ class StackedRouter extends _i1.RouterBase {
     _i1.RouteDef(
       Routes.wrapperView,
       page: _i2.WrapperView,
+    ),
+    _i1.RouteDef(
+      Routes.matchView,
+      page: _i2.MatchView,
     ),
   ];
 
@@ -67,6 +76,14 @@ class StackedRouter extends _i1.RouterBase {
         transitionsBuilder: data.transition ?? _i3.TransitionsBuilders.fadeIn,
       );
     },
+    _i2.MatchView: (data) {
+      final args = data.getArgs<MatchViewArguments>(nullOk: false);
+      return _i4.CupertinoPageRoute<dynamic>(
+        builder: (context) =>
+            _i2.MatchView(key: args.key, matchId: args.matchId),
+        settings: data,
+      );
+    },
   };
 
   @override
@@ -75,7 +92,23 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-extension NavigatorStateExtension on _i4.NavigationService {
+class MatchViewArguments {
+  const MatchViewArguments({
+    this.key,
+    required this.matchId,
+  });
+
+  final _i5.Key? key;
+
+  final String matchId;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "matchId": "$matchId"}';
+  }
+}
+
+extension NavigatorStateExtension on _i6.NavigationService {
   Future<dynamic> navigateToStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -118,6 +151,23 @@ extension NavigatorStateExtension on _i4.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToMatchView({
+    _i5.Key? key,
+    required String matchId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.matchView,
+        arguments: MatchViewArguments(key: key, matchId: matchId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithStartupView([
     int? routerId,
     bool preventDuplicates = true,
@@ -154,6 +204,23 @@ extension NavigatorStateExtension on _i4.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.wrapperView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithMatchView({
+    _i5.Key? key,
+    required String matchId,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.matchView,
+        arguments: MatchViewArguments(key: key, matchId: matchId),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
