@@ -1,3 +1,4 @@
+export 'dumb/b_badge.dart';
 export 'dumb/b_bio_quote.dart';
 export 'dumb/b_date_time_picker.dart';
 export 'dumb/b_page_transition.dart';
