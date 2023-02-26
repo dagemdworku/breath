@@ -8,7 +8,11 @@ class BFilledButton extends StatelessWidget {
   final IconData? icon;
 
   final bool fillWidth;
+  final bool isOutlined;
   final EdgeInsetsGeometry? margin;
+  final Color? contentColor;
+  final Color? backgroundColor;
+  final Color? borderColor;
 
   final void Function()? onTap;
 
@@ -17,7 +21,11 @@ class BFilledButton extends StatelessWidget {
     this.text,
     this.icon,
     this.fillWidth = false,
+    this.isOutlined = false,
     this.margin,
+    this.contentColor,
+    this.backgroundColor,
+    this.borderColor,
     this.onTap,
   }) : assert((text != null || icon != null),
             'Button needs to have either text or icon.');
@@ -32,19 +40,35 @@ class BFilledButton extends StatelessWidget {
         width: fillWidth ? double.infinity : null,
         padding: _padding(),
         decoration: BoxDecoration(
-          color: Colors.green,
+          color: isOutlined
+              ? Colors.white
+              : backgroundColor ?? Colors.blueGrey.shade500,
           borderRadius: BorderRadius.circular(100.0),
+          border: Border.all(
+            width: 1.0,
+            color: isOutlined
+                ? borderColor ?? Colors.blueGrey.shade300
+                : backgroundColor ?? Colors.blueGrey.shade500,
+          ),
         ),
         child: text != null
-            ? _TextContent(text: text!)
-            : _IconContent(icon: icon!),
+            ? _TextContent(
+                text: text!,
+                isOutlined: isOutlined,
+                color: contentColor,
+              )
+            : _IconContent(
+                icon: icon!,
+                isOutlined: isOutlined,
+                color: contentColor,
+              ),
       ),
     );
   }
 
   EdgeInsetsGeometry _padding() {
     if (text != null) {
-      return const EdgeInsets.symmetric(vertical: 12.0, horizontal: 14.0);
+      return const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0);
     } else {
       return const EdgeInsets.all(6.0);
     }
@@ -53,19 +77,25 @@ class BFilledButton extends StatelessWidget {
 
 class _TextContent extends StatelessWidget {
   final String text;
+  final bool isOutlined;
+  final Color? color;
 
   const _TextContent({
     super.key,
     required this.text,
+    required this.isOutlined,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 16,
-        color: Colors.white,
+      style: TextStyle(
+        fontSize: 18,
+        height: 1.0,
+        color: color ?? (isOutlined ? Colors.blueGrey.shade500 : Colors.white),
+        fontWeight: FontWeight.w500,
       ),
       textAlign: TextAlign.center,
     );
@@ -74,17 +104,21 @@ class _TextContent extends StatelessWidget {
 
 class _IconContent extends StatelessWidget {
   final IconData icon;
+  final bool isOutlined;
+  final Color? color;
 
   const _IconContent({
     super.key,
     required this.icon,
+    required this.isOutlined,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Icon(
       icon,
-      color: Colors.white,
+      color: color ?? (isOutlined ? Colors.blueGrey.shade500 : Colors.white),
     );
   }
 }
