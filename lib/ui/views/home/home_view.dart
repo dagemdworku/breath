@@ -130,6 +130,10 @@ class _UserInformation extends StatelessWidget {
             text:
                 'Sunt ad pariatur proident excepteur amet nulla laborum. Et mollit consectetur ullamco esse fugiat ea est elit adipisicing commodo ullamco mollit laborum quis. Eu dolor incididunt nisi pariatur amet officia culpa cillum ipsum nisi.',
           ),
+          const SizedBox(height: 16.0),
+          const _Interests(
+            interests: ['Reading books', 'Singing', 'Dancing', 'Shopping'],
+          )
         ],
       ),
     );
@@ -166,6 +170,30 @@ class _Information extends StatelessWidget {
         const SizedBox(width: 8.0),
         Text(text, style: textStyle)
       ],
+    );
+  }
+}
+
+class _Interests extends StatelessWidget {
+  final List<String> interests;
+
+  const _Interests({
+    super.key,
+    required this.interests,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      runSpacing: 8.0,
+      spacing: 8.0,
+      children: interests
+          .map(
+            (interest) => BBadge(
+              text: interest,
+            ),
+          )
+          .toList(),
     );
   }
 }
