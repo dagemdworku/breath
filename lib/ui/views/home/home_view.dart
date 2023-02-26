@@ -118,7 +118,7 @@ class _UserInformation extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text('Dagem D', style: nameStyle),
           Text('Worku', style: nameStyle.copyWith(fontWeight: FontWeight.w600)),
@@ -133,7 +133,12 @@ class _UserInformation extends StatelessWidget {
           const SizedBox(height: 16.0),
           const _Interests(
             interests: ['Reading books', 'Singing', 'Dancing', 'Shopping'],
-          )
+          ),
+          const SizedBox(height: 24.0),
+          _Actions(
+            onAccept: () {},
+            onReject: () {},
+          ),
         ],
       ),
     );
@@ -169,6 +174,37 @@ class _Information extends StatelessWidget {
         ),
         const SizedBox(width: 8.0),
         Text(text, style: textStyle)
+      ],
+    );
+  }
+}
+
+class _Actions extends StatelessWidget {
+  final void Function() onAccept;
+  final void Function() onReject;
+
+  const _Actions({super.key, required this.onAccept, required this.onReject});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: BFilledButton(
+            text: 'not for me',
+            isOutlined: true,
+            fillWidth: true,
+            onTap: onReject,
+          ),
+        ),
+        const SizedBox(width: 12.0),
+        Expanded(
+          child: BFilledButton(
+            text: 'go on a date',
+            fillWidth: true,
+            onTap: onAccept,
+          ),
+        )
       ],
     );
   }
