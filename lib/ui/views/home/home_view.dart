@@ -24,30 +24,39 @@ class HomeView extends StatelessWidget {
 
             final double appBarMaxSize = max(layoutWidth, layoutHeight / 2);
 
-            return model.user == null
-                ? _Loading(
-                    layoutWidth: layoutWidth,
-                    appBarHeight: appBarMaxSize + 24.0,
-                    nameHeight: 45.0,
-                    bioHeight: 100.0,
-                    othersHeight: 22.0,
-                  )
-                : Material(
-                    color: themeData.scaffoldBackgroundColor,
-                    child: CustomScrollView(
-                      slivers: [
-                        BUserAppBar(
-                          appBarMaxSize: appBarMaxSize,
+            return AnimatedCrossFade(
+              duration: const Duration(milliseconds: 300),
+              crossFadeState: model.user == null
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
+              firstChild: SizedBox(
+                width: layoutWidth,
+                height: layoutHeight,
+                child: Material(
+                  color: themeData.scaffoldBackgroundColor,
+                  child: CustomScrollView(
+                    slivers: [
+                      BUserAppBar(
+                        appBarMaxSize: appBarMaxSize,
+                      ),
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: _UserInformation(
+                          user: model.user,
                         ),
-                        SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: _UserInformation(
-                            user: model.user,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              secondChild: _Loading(
+                layoutWidth: layoutWidth,
+                appBarHeight: appBarMaxSize + 24.0,
+                nameHeight: 45.0,
+                bioHeight: 100.0,
+                othersHeight: 22.0,
+              ),
+            );
           },
         ),
       ),
@@ -76,8 +85,8 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Shimmer.fromColors(
-        baseColor: Colors.blueGrey.shade300,
-        highlightColor: Colors.blueGrey.shade100,
+        baseColor: Colors.blueGrey.shade100,
+        highlightColor: Colors.blueGrey.shade50,
         enabled: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
