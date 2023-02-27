@@ -34,7 +34,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: Env.apiKey,
-    appId: Env.appId,
+    appId: Env.appIdWeb,
     messagingSenderId: Env.messagingSenderId,
     projectId: Env.projectId,
     authDomain: Env.authDomain,
@@ -44,7 +44,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: Env.apiKey,
-    appId: Env.appId,
+    appId: Env.appIdAndroid,
     messagingSenderId: Env.messagingSenderId,
     projectId: Env.projectId,
     storageBucket: Env.storageBucket,
@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: Env.apiKey,
-    appId: Env.appId,
+    appId: Env.appIdIos,
     messagingSenderId: Env.messagingSenderId,
     projectId: Env.projectId,
     storageBucket: Env.storageBucket,
@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: Env.apiKey,
-    appId: Env.appId,
+    appId: Env.appIdIos,
     messagingSenderId: Env.messagingSenderId,
     projectId: Env.projectId,
     storageBucket: Env.storageBucket,

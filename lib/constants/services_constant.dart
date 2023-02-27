@@ -6,5 +6,8 @@ class ServicesConstant {
     /// [ Core Services ]
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: AuthenticationService),
+
+    /// [ Feature Services ]
+    LazySingleton(classType: UserService),
   ];
 }

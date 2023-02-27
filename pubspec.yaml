@@ -23,9 +23,13 @@ dependencies:
   # firebase
   firebase_core: ^2.7.0
   firebase_auth: ^4.2.9
+  cloud_firestore: ^4.4.3
 
   # environment file
   envied: ^0.3.0
+
+  # model
+  freezed_annotation: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -33,10 +37,18 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
 
-  # code generators
+  # code generator
   build_runner: ^2.3.3
+
+  # stacked code generator
   stacked_generator: ^0.9.3
+
+  # env code generator
   envied_generator: ^0.3.0
+
+  # data model generators
+  freezed: ^2.1.0+1
+  json_serializable: ^6.3.1
 
 flutter:
   uses-material-design: true
