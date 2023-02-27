@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const double _iconSize = 25.0;
 
 class BBioQuote extends StatelessWidget {
-  final String text;
+  final String? text;
 
   const BBioQuote({super.key, required this.text});
 

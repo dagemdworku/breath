@@ -11,8 +11,12 @@ export 'app/app.logger.dart';
 export 'app/app.router.dart';
 
 /// [ Constants ]
+export 'constants/firestore_collections_constant.dart';
 export 'constants/routes_constant.dart';
 export 'constants/services_constant.dart';
+
+/// [ Models ]
+export 'models/models.dart';
 
 /// [ Services ]
 export 'services/services.dart';

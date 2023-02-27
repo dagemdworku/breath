@@ -14,6 +14,7 @@ class HomeView extends StatelessWidget {
     final ThemeData themeData = Theme.of(context);
 
     return ViewModelBuilder<HomeViewModel>.reactive(
+      onViewModelReady: (viewModel) => viewModel.onViewModelReady(),
       builder: (context, model, child) => Scaffold(
         body: LayoutBuilder(
           builder: (context, constraints) {
@@ -29,9 +30,11 @@ class HomeView extends StatelessWidget {
                   BUserAppBar(
                     appBarMaxSize: appBarMaxSize,
                   ),
-                  const SliverFillRemaining(
+                  SliverFillRemaining(
                     hasScrollBody: false,
-                    child: _UserInformation(),
+                    child: _UserInformation(
+                      user: model.user,
+                    ),
                   ),
                 ],
               ),
@@ -45,7 +48,12 @@ class HomeView extends StatelessWidget {
 }
 
 class _UserInformation extends StatelessWidget {
-  const _UserInformation({super.key});
+  final User? user;
+
+  const _UserInformation({
+    super.key,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,20 +70,18 @@ class _UserInformation extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Dagem D', style: nameStyle),
-          Text('Worku', style: nameStyle.copyWith(fontWeight: FontWeight.w600)),
+          Text(user?.firstName ?? '', style: nameStyle),
+          Text(user?.lastName ?? '',
+              style: nameStyle.copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 8.0),
-          const _Information(text: 'City', icon: CupertinoIcons.house_alt_fill),
-          const _Information(text: 'Job Title', icon: Icons.business_center),
+          _Information(text: user?.city, icon: CupertinoIcons.house_alt_fill),
+          _Information(text: user?.jobTitle, icon: Icons.business_center),
           const SizedBox(height: 8.0),
-          const BBioQuote(
-            text:
-                'Sunt ad pariatur proident excepteur amet nulla laborum. Et mollit consectetur ullamco esse fugiat ea est elit adipisicing commodo ullamco mollit laborum quis. Eu dolor incididunt nisi pariatur amet officia culpa cillum ipsum nisi.',
+          BBioQuote(
+            text: user?.bio,
           ),
           const SizedBox(height: 16.0),
-          const _Interests(
-            interests: ['Reading books', 'Singing', 'Dancing', 'Shopping'],
-          ),
+          _Interests(interests: user?.hobbies),
           const SizedBox(height: 24.0),
           _Actions(
             onAccept: () {},
@@ -88,7 +94,7 @@ class _UserInformation extends StatelessWidget {
 }
 
 class _Information extends StatelessWidget {
-  final String text;
+  final String? text;
   final IconData icon;
 
   const _Information({
@@ -115,7 +121,7 @@ class _Information extends StatelessWidget {
           color: Colors.blueGrey.shade700,
         ),
         const SizedBox(width: 8.0),
-        Text(text, style: textStyle)
+        Text(text ?? '', style: textStyle)
       ],
     );
   }
@@ -153,7 +159,7 @@ class _Actions extends StatelessWidget {
 }
 
 class _Interests extends StatelessWidget {
-  final List<String> interests;
+  final List<String>? interests;
 
   const _Interests({
     super.key,
@@ -165,7 +171,7 @@ class _Interests extends StatelessWidget {
     return Wrap(
       runSpacing: 8.0,
       spacing: 8.0,
-      children: interests
+      children: (interests ?? [])
           .map(
             (interest) => BBadge(
               text: interest,

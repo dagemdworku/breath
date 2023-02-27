@@ -7,8 +7,14 @@ abstract class Env {
   @EnviedField(varName: 'API_KEY')
   static const apiKey = _Env.apiKey;
 
-  @EnviedField(varName: 'APP_ID')
-  static const appId = _Env.appId;
+  @EnviedField(varName: 'APP_ID_WEB')
+  static const appIdWeb = _Env.appIdWeb;
+
+  @EnviedField(varName: 'APP_ID_ANDROID')
+  static const appIdAndroid = _Env.appIdAndroid;
+
+  @EnviedField(varName: 'APP_ID_IOS')
+  static const appIdIos = _Env.appIdIos;
 
   @EnviedField(varName: 'MESSAGING_SENDER_ID')
   static const messagingSenderId = _Env.messagingSenderId;
