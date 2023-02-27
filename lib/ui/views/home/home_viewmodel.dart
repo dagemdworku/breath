@@ -20,6 +20,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> _fetchUsers() async {
     try {
+      await Future.delayed(Duration(seconds: 5));
       _users = await _userService.all();
       log.i('${_users.length} users fetched');
 

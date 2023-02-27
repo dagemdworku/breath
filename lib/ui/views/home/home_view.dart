@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:breath/breath.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'home_viewmodel.dart';
 
@@ -23,26 +24,122 @@ class HomeView extends StatelessWidget {
 
             final double appBarMaxSize = max(layoutWidth, layoutHeight / 2);
 
-            return Material(
-              color: themeData.scaffoldBackgroundColor,
-              child: CustomScrollView(
-                slivers: [
-                  BUserAppBar(
-                    appBarMaxSize: appBarMaxSize,
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: _UserInformation(
-                      user: model.user,
+            return model.user == null
+                ? _Loading(
+                    layoutWidth: layoutWidth,
+                    appBarHeight: appBarMaxSize + 24.0,
+                    nameHeight: 45.0,
+                    bioHeight: 100.0,
+                    othersHeight: 22.0,
+                  )
+                : Material(
+                    color: themeData.scaffoldBackgroundColor,
+                    child: CustomScrollView(
+                      slivers: [
+                        BUserAppBar(
+                          appBarMaxSize: appBarMaxSize,
+                        ),
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: _UserInformation(
+                            user: model.user,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            );
+                  );
           },
         ),
       ),
       viewModelBuilder: () => HomeViewModel(),
+    );
+  }
+}
+
+class _Loading extends StatelessWidget {
+  final double layoutWidth;
+  final double appBarHeight;
+  final double nameHeight;
+  final double bioHeight;
+  final double othersHeight;
+
+  const _Loading({
+    super.key,
+    required this.layoutWidth,
+    required this.appBarHeight,
+    required this.nameHeight,
+    required this.bioHeight,
+    required this.othersHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Shimmer.fromColors(
+        baseColor: Colors.blueGrey.shade300,
+        highlightColor: Colors.blueGrey.shade100,
+        enabled: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Material(
+              color: Colors.white,
+              child: SizedBox(
+                height: appBarHeight,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _getShimmer(
+                    const Key('first_name_shimmer'),
+                    max(100.0, layoutWidth / 2) + 50,
+                    nameHeight,
+                  ),
+                  const SizedBox(height: 8.0),
+                  _getShimmer(
+                    const Key('last_name_shimmer'),
+                    max(100.0, layoutWidth / 2),
+                    nameHeight,
+                  ),
+                  const SizedBox(height: 8.0),
+                  _getShimmer(
+                    const Key('city_shimmer'),
+                    max(100.0, layoutWidth / 2) + 30,
+                    othersHeight,
+                  ),
+                  const SizedBox(height: 8.0),
+                  _getShimmer(
+                    const Key('job_title_shimmer'),
+                    max(100.0, layoutWidth / 2) + 40,
+                    othersHeight,
+                  ),
+                  const SizedBox(height: 8.0),
+                  _getShimmer(
+                    const Key('bio_shimmer'),
+                    double.infinity,
+                    bioHeight,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getShimmer(Key key, double width, double height) {
+    return Material(
+      key: key,
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.0),
+      child: SizedBox(
+        width: width,
+        height: height,
+      ),
     );
   }
 }
